@@ -1,0 +1,37 @@
+#NAMING CONVENTIONS
+evaluation_table -> results of evaluation of through
+master 		-> complete preprocessed version
+binplots 	-> NumPy array which holds the 2D histograms
+array 		-> pandas DataFrame holding metadata + labels(accesable ["Ice-Ring])
+train 		-> training set(:len(X)*0.8) and validation set(len(X)*0.8:)
+Fobs/Iobs	-> histograms have been generated only out of the named value
+unstandardized 	-> Not standardized data (raw histograms, were only used for EDA), default is standardized
+cleaned 		-> Bad data has been removed.
+
+#FOLDER
+arrays: 		.pkl and .npy files which hold data read by the scripts
+
+files: 		.csv and .xlsx files which hold to human readable data
+
+stats: 		evaluation results, pictures, files used for BachelorThesis
+
+Helcaraxe_exe:	contains the final models, deployable script, auspex_ranges and some mtz to test
+
+Env:		contains the environment in which Helcaraxe was developed
+
+#.py
+bad_data_finder:		prototype of the discriminator function (detects cut out resolution ranges)
+
+sheet_cleaner: 		used to clean to initial label_sheets(output: cleaned_test/train .xlsx files)
+
+terminal_mtz_getter: 	downloads mtz files from AUSPEX server, needs VPN (not recommended, use CCP4)
+
+mtz_reader: 		reads mtz and cleaned_test/train files, outputs the master array
+
+labeler: 		tool to annonate data easily.
+
+evaluate_model: 		evaluates models, produces the evaluation_tables
+
+see_eva: 		script to inspect classifications
+
+model_builder.ipynb: 	Jupiter Notebook used to build, fit and evaluate model
