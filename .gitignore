@@ -3,3 +3,9 @@
 files/master_array_train_unstandardized.xlsx
 arrays/master_binplots_train_unstandardized.npy
 arrays/master_binplots_train.npy
+.idea/helcaraxe.iml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
