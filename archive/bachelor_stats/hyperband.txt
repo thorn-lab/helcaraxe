@@ -1,0 +1,262 @@
+Results summary
+|-Results in ./untitled_project
+|-Showing 10 best trials
+|-Objective(name='val_auc', direction='max')
+Trial summary
+|-Trial ID: 4bfc473bd2c1dadb0581e2ab25005bca
+|-Score: 0.9602816700935364
+|-Best step: 0
+Hyperparameters:
+|-conv_layers: 3
+|-covn_filter_0: 72
+|-covn_filter_1: 60
+|-covn_filter_2: 48
+|-covn_filter_3: 72
+|-covn_filter_4: 72
+|-covn_filter_start: 36
+|-covn_kernel_0: 7
+|-covn_kernel_1: 7
+|-covn_kernel_2: 11
+|-covn_kernel_3: 5
+|-covn_kernel_4: 5
+|-covn_kernel_start: 13
+|-dense_layers: 3
+|-tuner/bracket: 0
+|-tuner/epochs: 10
+|-tuner/initial_epoch: 0
+|-tuner/round: 0
+|-unit_0: 80
+|-unit_1: 60
+|-unit_2: 40
+Trial summary
+|-Trial ID: cd06dd08041fa83827391e6fb12457d1
+|-Score: 0.9463569521903992
+|-Best step: 0
+Hyperparameters:
+|-conv_layers: 5
+|-covn_filter_0: 24
+|-covn_filter_1: 24
+|-covn_filter_2: 48
+|-covn_filter_3: 48
+|-covn_filter_4: 24
+|-covn_filter_start: 24
+|-covn_kernel_0: 9
+|-covn_kernel_1: 9
+|-covn_kernel_2: 7
+|-covn_kernel_3: 9
+|-covn_kernel_4: 9
+|-covn_kernel_start: 9
+|-dense_layers: 1
+|-tuner/bracket: 0
+|-tuner/epochs: 10
+|-tuner/initial_epoch: 0
+|-tuner/round: 0
+|-unit_0: 20
+|-unit_1: 20
+|-unit_2: 20
+Trial summary
+|-Trial ID: 36c465184173ce2d9d87c6e583fc9d87
+|-Score: 0.9453551173210144
+|-Best step: 0
+Hyperparameters:
+|-conv_layers: 3
+|-covn_filter_0: 12
+|-covn_filter_1: 84
+|-covn_filter_2: 72
+|-covn_filter_3: 72
+|-covn_filter_4: 48
+|-covn_filter_start: 72
+|-covn_kernel_0: 7
+|-covn_kernel_1: 9
+|-covn_kernel_2: 11
+|-covn_kernel_3: 9
+|-covn_kernel_4: 5
+|-covn_kernel_start: 11
+|-dense_layers: 2
+|-tuner/bracket: 1
+|-tuner/epochs: 4
+|-tuner/initial_epoch: 0
+|-tuner/round: 0
+|-unit_0: 60
+|-unit_1: 40
+|-unit_2: 40
+Trial summary
+|-Trial ID: 3cc26a32ef41191809734b79b8f4f22a
+|-Score: 0.9403453469276428
+|-Best step: 0
+Hyperparameters:
+|-conv_layers: 4
+|-covn_filter_0: 12
+|-covn_filter_1: 36
+|-covn_filter_2: 60
+|-covn_filter_3: 72
+|-covn_filter_4: 84
+|-covn_filter_start: 84
+|-covn_kernel_0: 5
+|-covn_kernel_1: 9
+|-covn_kernel_2: 5
+|-covn_kernel_3: 7
+|-covn_kernel_4: 11
+|-covn_kernel_start: 9
+|-dense_layers: 3
+|-tuner/bracket: 0
+|-tuner/epochs: 10
+|-tuner/initial_epoch: 0
+|-tuner/round: 0
+|-unit_0: 80
+|-unit_1: 20
+|-unit_2: 40
+Trial summary
+|-Trial ID: 65bcb4211ae37192e987ea29c55b61de
+|-Score: 0.9391506314277649
+|-Best step: 0
+Hyperparameters:
+|-conv_layers: 3
+|-covn_filter_0: 24
+|-covn_filter_1: 24
+|-covn_filter_2: 60
+|-covn_filter_3: 48
+|-covn_filter_4: 72
+|-covn_filter_start: 96
+|-covn_kernel_0: 11
+|-covn_kernel_1: 7
+|-covn_kernel_2: 5
+|-covn_kernel_3: 11
+|-covn_kernel_4: 7
+|-covn_kernel_start: 5
+|-dense_layers: 2
+|-tuner/bracket: 0
+|-tuner/epochs: 10
+|-tuner/initial_epoch: 0
+|-tuner/round: 0
+|-unit_0: 20
+|-unit_1: 60
+|-unit_2: 60
+Trial summary
+|-Trial ID: 98d94de919503b01f0c46ce2632d8aef
+|-Score: 0.9389451742172241
+|-Best step: 0
+Hyperparameters:
+|-conv_layers: 3
+|-covn_filter_0: 24
+|-covn_filter_1: 84
+|-covn_filter_2: 48
+|-covn_filter_3: 36
+|-covn_filter_4: 84
+|-covn_filter_start: 24
+|-covn_kernel_0: 7
+|-covn_kernel_1: 11
+|-covn_kernel_2: 7
+|-covn_kernel_3: 5
+|-covn_kernel_4: 5
+|-covn_kernel_start: 5
+|-dense_layers: 1
+|-tuner/bracket: 0
+|-tuner/epochs: 10
+|-tuner/initial_epoch: 0
+|-tuner/round: 0
+|-unit_0: 20
+|-unit_1: 40
+|-unit_2: 60
+Trial summary
+|-Trial ID: d47dfac33c862412d13d82e5d18c317f
+|-Score: 0.9339481592178345
+|-Best step: 0
+Hyperparameters:
+|-conv_layers: 3
+|-covn_filter_0: 36
+|-covn_filter_1: 36
+|-covn_filter_2: 84
+|-covn_filter_start: 84
+|-covn_kernel_0: 5
+|-covn_kernel_1: 5
+|-covn_kernel_2: 9
+|-covn_kernel_start: 5
+|-dense_layers: 1
+|-tuner/bracket: 2
+|-tuner/epochs: 10
+|-tuner/initial_epoch: 4
+|-tuner/round: 2
+|-tuner/trial_id: 94e4543577ac78c89d73fa33da0c121a
+|-unit_0: 40
+|-unit_1: 40
+|-unit_2: 40
+Trial summary
+|-Trial ID: d0cea723664bd466bdb9cc64205b0625
+|-Score: 0.9323809742927551
+|-Best step: 0
+Hyperparameters:
+|-conv_layers: 4
+|-covn_filter_0: 84
+|-covn_filter_1: 24
+|-covn_filter_2: 96
+|-covn_filter_3: 48
+|-covn_filter_4: 24
+|-covn_filter_start: 24
+|-covn_kernel_0: 9
+|-covn_kernel_1: 11
+|-covn_kernel_2: 9
+|-covn_kernel_3: 7
+|-covn_kernel_4: 9
+|-covn_kernel_start: 9
+|-dense_layers: 2
+|-tuner/bracket: 0
+|-tuner/epochs: 10
+|-tuner/initial_epoch: 0
+|-tuner/round: 0
+|-unit_0: 40
+|-unit_1: 40
+|-unit_2: 20
+Trial summary
+|-Trial ID: db875e14a597d36d22aa3a522c61d53b
+|-Score: 0.9321112632751465
+|-Best step: 0
+Hyperparameters:
+|-conv_layers: 3
+|-covn_filter_0: 84
+|-covn_filter_1: 12
+|-covn_filter_2: 24
+|-covn_filter_3: 60
+|-covn_filter_4: 48
+|-covn_filter_start: 96
+|-covn_kernel_0: 7
+|-covn_kernel_1: 7
+|-covn_kernel_2: 7
+|-covn_kernel_3: 7
+|-covn_kernel_4: 7
+|-covn_kernel_start: 11
+|-dense_layers: 2
+|-tuner/bracket: 0
+|-tuner/epochs: 10
+|-tuner/initial_epoch: 0
+|-tuner/round: 0
+|-unit_0: 20
+|-unit_1: 40
+|-unit_2: 80
+Trial summary
+|-Trial ID: 96eef4f7566aba78d10bdc78952d9d05
+|-Score: 0.9307240843772888
+|-Best step: 0
+Hyperparameters:
+|-conv_layers: 3
+|-covn_filter_0: 12
+|-covn_filter_1: 84
+|-covn_filter_2: 72
+|-covn_filter_3: 72
+|-covn_filter_4: 48
+|-covn_filter_start: 72
+|-covn_kernel_0: 7
+|-covn_kernel_1: 9
+|-covn_kernel_2: 11
+|-covn_kernel_3: 9
+|-covn_kernel_4: 5
+|-covn_kernel_start: 11
+|-dense_layers: 2
+|-tuner/bracket: 1
+|-tuner/epochs: 10
+|-tuner/initial_epoch: 4
+|-tuner/round: 1
+|-tuner/trial_id: 36c465184173ce2d9d87c6e583fc9d87
+|-unit_0: 60
+|-unit_1: 40
+|-unit_2: 40

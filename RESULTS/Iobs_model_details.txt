@@ -1,0 +1,9 @@
+Best I_obs model:
+Architecture same as Fobs
+Fine-Tuning of the Fobs model with LR of 0.00005
+
+Validation:
+1s 21ms/step - loss: 0.0348 - tp: 34.0000 - fp: 4.0000 - tn: 795.0000 - fn: 3.0000 - accuracy: 0.9916 - precision: 0.8947 - recall: 0.9189 - auc: 0.9836
+
+Test:
+loss: 0.1238 - tp: 72.0000 - fp: 3.0000 - tn: 1301.0000 - fn: 35.0000 - accuracy: 0.9731 - precision: 0.9600 - recall: 0.6729 - auc: 0.9253

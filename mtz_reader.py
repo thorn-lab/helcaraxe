@@ -56,7 +56,7 @@ def plot (res_lst, ampli_lst, pdb_id, max_res, marker):
     :param marker: str, F or I
     :return: plot_lst conataining the 2D-histograms, id_lst, list contain
     """
-    auspex_rng = np.genfromtxt("/Users/kristophernolte/Documents/AG_Thorn/Helcaraxe/files/auspex_ranges.csv", delimiter=';')
+    auspex_rng = np.genfromtxt("/Volumes/My Passport/Helcaraxe/ARM_env/files/auspex_ranges.csv", delimiter=';')
 
     for i, element in enumerate(auspex_rng):
         position = str(i - 1)
@@ -83,6 +83,7 @@ def plot (res_lst, ampli_lst, pdb_id, max_res, marker):
             id_key = "_".join([marker, pdb_id, position])
             id_list.append(id_key)
             plot_list.append(bin_arr)
+
 
 def master (plot_list):
     class_tbl = class_list.to_numpy()
@@ -114,6 +115,7 @@ def main():
     global plot_list, id_list, root, class_list
     root = "/Users/kristophernolte/Documents/AG_Thorn/Helcaraxe/"
     plot_list, id_list, stat_list_l, stat_list_r, missing_keys = [], [], [], [], []
+
     class_lst = pd.read_pickle(root+"arrays/cleaned_train.pkl".format(version))
     for i,key in enumerate(class_lst["PDB-ID"]):
         key = key[:4]
@@ -122,6 +124,7 @@ def main():
             mtz_reader(mtz, key)
         except RuntimeError: missing_keys.append(key)
         print(round(i/len(class_lst),2))
+
     print(missing_keys)
     master(plot_list)
 
