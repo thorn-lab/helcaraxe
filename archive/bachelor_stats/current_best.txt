@@ -1,0 +1,7 @@
+F_obs
+loss: 0.0698 - tp: 95.0000 - fp: 17.0000 - tn: 1281.0000 - fn: 15.0000 - accuracy: 0.9773 - precision: 0.8482 - recall: 0.8636 - auc: 0.9773
+I_obs
+loss: 0.1257 - tp: 80.0000 - fp: 6.0000 - tn: 1298.0000 - fn: 27.0000 - accuracy: 0.9766 - precision: 0.9302 - recall: 0.7477 - auc: 0.9283
+
+F_obs: 110 ice rings, 1298 non ice ring --> 1408
+I_obs: 107 ice rings, 1304 non ice ring --> 1411
