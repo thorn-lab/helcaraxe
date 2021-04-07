@@ -51,7 +51,6 @@ def mtz_opener(mtz_path):
 
         return get_pred_lst(cI_res, cF_res, cI_obs, cF_obs)
 
-
     try:
         mtz = gemmi.read_mtz_file(mtz_path)
         return mtz_reader()
@@ -166,8 +165,6 @@ def plot_generator(res_lst, y_lst, ice_ranges):
     else:
         return None, None
 
-
-
 def predictor(plot_lst, del_lst):
     """
     :param plot_lst: list of 3D plots, shape: [None,80,80,1]
@@ -190,24 +187,31 @@ def get_txt(entry_path):
     #path to the mtz file correct mtz file
     mtz_path = "/".join([entry_path,"validation", "auspex", "{}-sf.mtz".format(id)])
     #get prediction from model
-    pred_lst = mtz_opener(mtz_path)
+    pred_lst_I, pred_lst_F = mtz_opener(mtz_path)
 
     #write .txt doc with with a readable output
     doc = open("/".join([entry_path, "validation", "{}_Helcaraxe_icering_detection.txt".format(id)]), "w+")
     doc.write("###ice crystal artefact detection through Helcaraxe###\n\n")
 
+    def txt_writer (pred_lst):
+        ice_ring_index = np.where(pred_lst > 0.5)
+        ice_ring_index = np.squeeze(ice_ring_index)
 
-    for list in pred_lst:
-        if list is not None:
-            ice_ring_index = np.where(list > 0.5)
-            ice_ring_index = np.squeeze(ice_ring_index)
+        if len(ice_ring_index) > 0:
+            for i in ice_ring_index:
+                startA = ice_ranges[i+1][2]
+                endA = ice_ranges[i+1][1]
+                prediction = round(list[i],2)
+                doc.write("< {} - {} Å > ice crystal artefact detected, probability: {}\n".format(startA,endA,prediction))
+        else:
+            doc.write("< no ice crystal artefact detected >\n")
 
-            if len(ice_ring_index) > 0:
-                for i in ice_ring_index:
-                    startA = ice_ranges[i+1][2]
-                    endA = ice_ranges[i+1][1]
-                    prediction = round(list[i],2)
-                    doc.write("< {} - {} Å > ice crystal artefact detected, probability: {}\n".format(startA,endA,prediction))
-            else:
-                doc.write("< no ice crystal artefact detected >\n")
+    if pred_lst_I != None:
+        txt_writer(pred_lst_I)
+    elif pred_lst_I != None:
+        txt_writer(pred_lst_I)
+    else:
+        doc.write("< mtz file was not readable >")
     doc.close()
+
+mtz_opener(mtz_path="/Users/kristophernolte/Documents/AG_Thorn/BachelorThese/mtz/4epz.mtz")
