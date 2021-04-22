@@ -178,6 +178,7 @@ def predictor(plot_lst, del_lst):
             prediction_lst[j] = None
         else:
             prediction_lst[j] = model_prediction[j][0]
+    print(prediction_lst)
     prediction_lst = np.asarray(np.around(prediction_lst, 2))
     return prediction_lst
 
@@ -190,8 +191,8 @@ def get_txt(entry_path):
     pred_lst_I, pred_lst_F = mtz_opener(mtz_path)
 
     #write .txt doc with with a readable output
-    doc = open("/".join([entry_path, "validation", "{}_Helcaraxe_icering_detection.txt".format(id)]), "w+")
-    doc.write("###ice crystal artefact detection through Helcaraxe###\n\n")
+    doc = open("/".join([entry_path, "validation","auspex","{}_Helcaraxe_icering_detection.txt".format(id)]), "w+")
+    doc.write("###ice crystal artefact detection through Helcaraxe###\n")
 
     def txt_writer (pred_lst):
         ice_ring_index = np.where(pred_lst > 0.5)
@@ -201,17 +202,19 @@ def get_txt(entry_path):
             for i in ice_ring_index:
                 startA = ice_ranges[i+1][2]
                 endA = ice_ranges[i+1][1]
-                prediction = round(list[i],2)
+                prediction = round(pred_lst[i],2)
                 doc.write("< {} - {} Å > ice crystal artefact detected, probability: {}\n".format(startA,endA,prediction))
         else:
             doc.write("< no ice crystal artefact detected >\n")
 
-    if pred_lst_I != None:
+    doc.write("\n-observed intensity data-\n")
+    if pred_lst_I is not None:
         txt_writer(pred_lst_I)
-    elif pred_lst_I != None:
-        txt_writer(pred_lst_I)
-    else:
-        doc.write("< mtz file was not readable >")
+    else: pass
+    doc.write("\n-structure factor amplitude data-\n")
+    if pred_lst_F is not None:
+        txt_writer(pred_lst_F)
+    else: pass
     doc.close()
 
-mtz_opener(mtz_path="/Users/kristophernolte/Documents/AG_Thorn/BachelorThese/mtz/4epz.mtz")
+mtz_opener("/Volumes/My Passport/Helcaraxe/mtz/4awa.mtz")
