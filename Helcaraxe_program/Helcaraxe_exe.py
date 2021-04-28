@@ -1,5 +1,7 @@
 import numpy as np
 import scipy as scp
+import math
+import gemmi
 from tensorflow import keras, image, convert_to_tensor
 
 """
@@ -10,11 +12,20 @@ These plots are classified by a CNN model and the prediction is returned as a nu
 """
 
 def mtz_opener(mtz_path):
+    """
+    Function is only for testing until Helcaraxe is integrated into AUSPEX.py
+    opens the mtz file through gemmi.
+    :param mtz_path: path as string to .mtz file
+    :return: mtz_reader()
+    """
     # This is only to test, this task will be taken by auspex !!!
-    import math
-    import gemmi
 
     def mtz_reader():
+        """
+        Function is only for testing until Helcaraxe is integrated into AUSPEX.py
+        gets observed Intensities, observed strcuture factor amplitudes and resolution out of .mtz file
+        :return: get_prediction_list
+        """
         cI_obs, cF_obs, cI_res, cF_res = [], [], [], []
         i_obs = mtz.column_with_label('I')
         f_obs = mtz.column_with_label('FP')
@@ -59,24 +70,31 @@ def mtz_opener(mtz_path):
 
 def get_pred_lst (i_res, f_res, i_obs, f_obs):
     """
+    :param i_res: list of Resolution values corresponding to i_obs values
+    :param f_res: list of Resolution values corresponding to f_obs values
     :param i_obs: list of I_obs values
     :param f_obs: list of F_obs values
-    :param res_lst: list of Resolution values
+
     All parameters have to have the same lenght! The index of the list is used for referencing
 
-    :var model: .h5 file, Convolutional Neural Network (CNN) model, input shape: [80,80,1], output: float between 0 or 1
+    :var model: Convolutional Neural Network (CNN) model, input shape: [80,80,1], output: float between 0 or 1
     :var prediction_lst: list of predictions, index is refering to ice_ranges. Possible Predictions:
         int (-1) = Resolution range was not available
         NoneType (None) = Resolution range was not predicted due to missing intensities
         float (0 -> 1) = classification of the model, 0 = no ice ring, 1 = ice ring
     """
     global model, ice_ranges
+    #loading resolution ranges and models
     ice_ranges = np.genfromtxt("/Volumes/My Passport/Helcaraxe/ARM_env/Helcaraxe_program/Auspex_ranges.csv", delimiter=';')
     model_iobs = keras.models.load_model("/Volumes/My Passport/Helcaraxe/ARM_env/Helcaraxe_program/final_models/best_Iobs_model")
     model_fobs = keras.models.load_model("/Volumes/My Passport/Helcaraxe/ARM_env/Helcaraxe_program/final_models/best_Fobs_model")
     I_prediction_lst, F_prediction_lst = None, None
 
-    # Takes I_obs value if avaible when not F_obs values are taken
+    # Raises Exception if .mtz file has no f_obs or i_obs values
+    if f_obs is None and i_obs is None:
+        raise Exception("Invalid Input")
+
+    # Takes I_obs value if avaible and returns list of models prediction
     # ToDo: functionalize
     if i_obs is not None and i_res is not None:
         model = model_iobs
@@ -86,6 +104,7 @@ def get_pred_lst (i_res, f_res, i_obs, f_obs):
         else:
             raise Exception("Invalid Input")
 
+    # Takes F_obs value if avaible and returns list of models prediction
     if f_obs is not None and f_res is not None:
         model = model_fobs
         F_plot_lst, F_del_list = plot_generator(f_res, f_obs, ice_ranges)
@@ -94,20 +113,18 @@ def get_pred_lst (i_res, f_res, i_obs, f_obs):
         else:
             raise Exception("Invalid Input")
 
-    if f_obs is None and i_obs is None:
-        raise Exception("Invalid Input")
-
     return I_prediction_lst, F_prediction_lst
 
 def plot_generator(res_lst, y_lst, ice_ranges):
     """
+    create 2D histograms using intensity (or structure factor)values and resolution
     :param res_lst: list of resolution values
     :param y_lst: list of either I_obs or F-obs values
     :param max_res: maximum resolution in which intensities are recorded
     :param ice_ranges: .csv file, holds information about the resolution ranges in which ice rings can appear
     :var plots: 2D array of Intensities against resolution in distinct resolution ranges
     :var y_range: Intensities in the resolution range
-    :return: list of plots
+    :return: list of 2D histograms
     """
     plot_lst = []
     del_lst = np.full([25], -1)
@@ -167,23 +184,28 @@ def plot_generator(res_lst, y_lst, ice_ranges):
 
 def predictor(plot_lst, del_lst):
     """
+    calls a helcarxe model for prediction
     :param plot_lst: list of 3D plots, shape: [None,80,80,1]
     :return: predict_dict[PDB_ID], numpy.ndarray
     """
     # iniates prediction_lst
     prediction_lst = np.full([25], -1.0)
     model_prediction = model(plot_lst)
+    #checking if discriminator function has marked a histogram and if so sets its value in the prediction list to None
     for j in range(len(model_prediction)):
         if del_lst[j] == 99:
             prediction_lst[j] = None
         else:
             prediction_lst[j] = model_prediction[j][0]
-    print(prediction_lst)
     prediction_lst = np.asarray(np.around(prediction_lst, 2))
     return prediction_lst
 
 def get_txt(entry_path):
-    #example_path = "/Volumes/cstf-repo/coronavirus_structural_task_force/pdb/nsp3/SARS-CoV-2/5rud"
+    """
+    function for Helcaraxe to be used in the CSTF validation pipeline
+    :param entry_path: path to id in repository (example_path = "/Volumes/cstf-repo/coronavirus_structural_task_force/pdb/nsp3/SARS-CoV-2/5rud")
+    writes a txt doc in validation folder containing the prediction of Helcaraxe
+    """
     id = entry_path[-4:]
     #path to the mtz file correct mtz file
     mtz_path = "/".join([entry_path,"validation", "auspex", "{}-sf.mtz".format(id)])
