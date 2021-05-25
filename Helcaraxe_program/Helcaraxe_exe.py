@@ -5,7 +5,7 @@ import gemmi
 from tensorflow import keras, image, convert_to_tensor
 
 """
-This code was written by Kristopher Nolte in 2020 as part of Thorn Lab, University of Hamburg.
+This code was written by Kristopher Nolte in 2020/2021 as part of Thorn Lab, University of Hamburg.
 This .py takes I_obs, F_obs and Resolution values and out of this produces plots
 of resolution ranges in which ice rings can appear.
 These plots are classified by a CNN model and the prediction is returned as a numpy array
@@ -238,5 +238,3 @@ def get_txt(entry_path):
         txt_writer(pred_lst_F)
     else: pass
     doc.close()
-
-mtz_opener("/Volumes/My Passport/Helcaraxe/mtz/4awa.mtz")
