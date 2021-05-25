@@ -1,0 +1,14 @@
+/archive: files not used anymore
+
+/PDB_REPORT_csv: csv files of pdb request for meta data
+
+/PDB_REPORT_pkl: pkl files of pdb request for meta data
+
+files_list.npy numpy array with Helcaraxe pdb run.
+	files_list[:,0] = PDB ID
+	files_list[:,1] = Postion index (see bsc. Thesis) where helcaraxe predicted contamination.
+
+cif_to_mtz.py: Python script to convert .cif to .mtz files
+
+run_pdb_analysis: Python script which ran the Helcaraxe pdb run.
+
