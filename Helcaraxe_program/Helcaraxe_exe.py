@@ -3,6 +3,7 @@ import scipy as scp
 import math
 import gemmi
 from tensorflow import keras, image, convert_to_tensor
+import matplotlib.pyplot as plt
 
 """
 This code was written by Kristopher Nolte in 2020/2021 as part of Thorn Lab, University of Hamburg.
@@ -85,9 +86,9 @@ def get_pred_lst (i_res, f_res, i_obs, f_obs):
     """
     global model, ice_ranges
     #loading resolution ranges and models
-    ice_ranges = np.genfromtxt("/Volumes/My Passport/Helcaraxe/ARM_env/Helcaraxe_program/Auspex_ranges.csv", delimiter=';')
-    model_iobs = keras.models.load_model("/Volumes/My Passport/Helcaraxe/ARM_env/Helcaraxe_program/final_models/best_Iobs_model")
-    model_fobs = keras.models.load_model("/Volumes/My Passport/Helcaraxe/ARM_env/Helcaraxe_program/final_models/best_Fobs_model")
+    ice_ranges = np.genfromtxt("Auspex_ranges.csv", delimiter=';')
+    model_iobs = keras.models.load_model("final_models/best_Iobs_model")
+    model_fobs = keras.models.load_model("final_models/best_Fobs_model")
     I_prediction_lst, F_prediction_lst = None, None
 
     # Raises Exception if .mtz file has no f_obs or i_obs values
@@ -153,7 +154,6 @@ def plot_generator(res_lst, y_lst, ice_ranges):
             # create a 2D histogram of the resolution range
             bin_arr, xedges, yedges = np.histogram2d(res_lst, y_lst, range=image_bin, bins=80)
             bin_arr = scp.ndimage.rotate(bin_arr, 90)
-
             def discriminator(plot, pos):
                 """
                 :param plot: 2D array of intensities against resolution
@@ -163,7 +163,7 @@ def plot_generator(res_lst, y_lst, ice_ranges):
                 step = 10
                 i = 0
                 while i < 80:
-                    if np.mean(plot[:, i:i + step]) <= 0.005:
+                    if np.mean(plot[:, i:i + step]) <= 0:
                         del_lst[pos-1] = 99
                         break
                     i += 5
@@ -174,10 +174,12 @@ def plot_generator(res_lst, y_lst, ice_ranges):
 
     # plots are reshaped in a CNN usable format and standardized
     if len(plot_lst) > 0:
-        plot_lst = np.asarray(plot_lst).astype(np.float32)
-        plot_lst = plot_lst.reshape(len(plot_lst), 80, 80, 1)
+        #plot_lst = np.asarray(plot_lst)
         plot_lst = image.per_image_standardization(plot_lst)
-        plot_lst = convert_to_tensor(plot_lst)
+        plot_lst = np.asarray(plot_lst)
+        plot_lst = plot_lst.reshape(len(plot_lst), 80, 80, 1)
+        #plot_lst = image.per_image_standardization(plot_lst)
+        plot_lst = np.asarray(plot_lst).astype(np.float32)
         return plot_lst, del_lst
     else:
         return None, None
@@ -194,10 +196,11 @@ def predictor(plot_lst, del_lst):
     #checking if discriminator function has marked a histogram and if so sets its value in the prediction list to None
     for j in range(len(model_prediction)):
         if del_lst[j] == 99:
-            prediction_lst[j] = None
+            prediction_lst[j] = 99
         else:
             prediction_lst[j] = model_prediction[j][0]
-    prediction_lst = np.asarray(np.around(prediction_lst, 2))
+
+    prediction_lst = np.asarray(np.around(prediction_lst, 4))
     return prediction_lst
 
 def get_txt(entry_path):

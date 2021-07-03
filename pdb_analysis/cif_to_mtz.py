@@ -1,10 +1,10 @@
 import os
 import numpy as np
 
-cif_path = "/Volumes/My\ Passport/complete_pdb/sf_unzipped/"
-mtz_path = "/Volumes/My\ Passport/complete_pdb/mtz/"
+cif_path = "/Users/kristophernolte/Documents/GitHub/helcaraxe/Helcaraxe_program/mtz/"
+mtz_path = "/Users/kristophernolte/Documents/GitHub/helcaraxe/Helcaraxe_program/mtz/"
 
-file_list = np.load("files_list.npy")
+file_list = ["1rdr-sf.cif"]
 
 for i, filename in enumerate(file_list):
     print(i, len(file_list))
