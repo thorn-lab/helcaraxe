@@ -9,7 +9,8 @@ pdb_id_lst = master_array["PDB-ID"].unique()
 eva_df = pd.DataFrame(columns=["pdb_id","I_name","I_prediction","F_name","F_prediction"])
 
 for j,pdb_id in enumerate(pdb_id_lst):
-    mtz_path = "/Users/kristophernolte/Documents/GitHub/helcaraxe/mtz/{}.mtz".format(pdb_id)
+    print(round(j/len(pdb_id_lst),2))
+    mtz_path = "/Users/kristophernolte/Documents/GitHub/helcaraxe/test_mtz/{}.mtz".format(pdb_id)
     I_prediction_lst, F_prediction_lst = he.mtz_opener(mtz_path)
     if I_prediction_lst is not None:
         for i,I_prediction in enumerate(I_prediction_lst):
@@ -25,5 +26,5 @@ for j,pdb_id in enumerate(pdb_id_lst):
                 eva_df = eva_df.append(new_row, ignore_index=True)
 
 
-eva_df.to_pickle("evaluation_table.pkl")
-eva_df.to_excel("evaluation_table.xlsx")
+eva_df.to_pickle("elenwe_evaluation_table.pkl")
+eva_df.to_excel("elenwe_evaluation_table.xlsx")

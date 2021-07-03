@@ -11,7 +11,6 @@ This .py takes I_obs, F_obs and Resolution values and out of this produces plots
 of resolution ranges in which ice rings can appear.
 These plots are classified by a CNN model and the prediction is returned as a numpy array
 """
-
 def mtz_opener(mtz_path):
     """
     Function is only for testing until Helcaraxe is integrated into AUSPEX.py
@@ -19,8 +18,8 @@ def mtz_opener(mtz_path):
     :param mtz_path: path as string to .mtz file
     :return: mtz_reader()
     """
-    # This is only to test, this task will be taken by auspex !!!
 
+    # This is only to test, this task will be taken by auspex !!!
     def mtz_reader():
         """
         Function is only for testing until Helcaraxe is integrated into AUSPEX.py
@@ -84,11 +83,14 @@ def get_pred_lst (i_res, f_res, i_obs, f_obs):
         NoneType (None) = Resolution range was not predicted due to missing intensities
         float (0 -> 1) = classification of the model, 0 = no ice ring, 1 = ice ring
     """
-    global model, ice_ranges
+    global model, ice_ranges, value
     #loading resolution ranges and models
     ice_ranges = np.genfromtxt("Auspex_ranges.csv", delimiter=';')
-    model_iobs = keras.models.load_model("final_models/best_Iobs_model")
-    model_fobs = keras.models.load_model("final_models/best_Fobs_model")
+    #model_iobs = keras.models.load_model("final_models/best_Iobs_model")
+    #model_fobs = keras.models.load_model("final_models/best_Fobs_model")
+
+    model_iobs = keras.models.load_model("elenwe_models/Elenwe_Iobs_model_retrained")
+    model_fobs = keras.models.load_model("elenwe_models/Elenwe_Fobs_model")
     I_prediction_lst, F_prediction_lst = None, None
 
     # Raises Exception if .mtz file has no f_obs or i_obs values
@@ -98,6 +100,7 @@ def get_pred_lst (i_res, f_res, i_obs, f_obs):
     # Takes I_obs value if avaible and returns list of models prediction
     # ToDo: functionalize
     if i_obs is not None and i_res is not None:
+        value = "I"
         model = model_iobs
         I_plot_lst, I_del_list = plot_generator(i_res, i_obs, ice_ranges)
         if I_plot_lst is not None and I_del_list is not None:
@@ -107,6 +110,7 @@ def get_pred_lst (i_res, f_res, i_obs, f_obs):
 
     # Takes F_obs value if avaible and returns list of models prediction
     if f_obs is not None and f_res is not None:
+        value = "F"
         model = model_fobs
         F_plot_lst, F_del_list = plot_generator(f_res, f_obs, ice_ranges)
         if F_plot_lst is not None and F_del_list is not None:
@@ -154,6 +158,7 @@ def plot_generator(res_lst, y_lst, ice_ranges):
             # create a 2D histogram of the resolution range
             bin_arr, xedges, yedges = np.histogram2d(res_lst, y_lst, range=image_bin, bins=80)
             bin_arr = scp.ndimage.rotate(bin_arr, 90)
+
             def discriminator(plot, pos):
                 """
                 :param plot: 2D array of intensities against resolution
@@ -161,12 +166,12 @@ def plot_generator(res_lst, y_lst, ice_ranges):
                 :return: sets blank images to None in prediction_lst -> They will not be predicted by the model
                 """
                 step = 10
-                i = 0
-                while i < 80:
+                i = 10
+                while i < 70:
                     if np.mean(plot[:, i:i + step]) <= 0:
                         del_lst[pos-1] = 99
                         break
-                    i += 5
+                    i += 4
                 return del_lst
 
             del_list = discriminator(bin_arr, pos)
@@ -174,12 +179,9 @@ def plot_generator(res_lst, y_lst, ice_ranges):
 
     # plots are reshaped in a CNN usable format and standardized
     if len(plot_lst) > 0:
-        #plot_lst = np.asarray(plot_lst)
-        plot_lst = image.per_image_standardization(plot_lst)
         plot_lst = np.asarray(plot_lst)
         plot_lst = plot_lst.reshape(len(plot_lst), 80, 80, 1)
-        #plot_lst = image.per_image_standardization(plot_lst)
-        plot_lst = np.asarray(plot_lst).astype(np.float32)
+        plot_lst = image.per_image_standardization(plot_lst)
         return plot_lst, del_lst
     else:
         return None, None
