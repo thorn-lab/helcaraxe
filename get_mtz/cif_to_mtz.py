@@ -2,8 +2,9 @@ import os
 import requests
 import pandas as pd
 
-sf_path = "/Users/kristophernolte/Documents/GitHub/helcaraxe/train_mtz/structure_factors/"
-mtz_path = "/Users/kristophernolte/Documents/GitHub/helcaraxe/train_mtz/"
+#sf_path = "/Users/kristophernolte/Documents/GitHub/helcaraxe/train_mtz/structure_factors/"
+mtz_path = "/Users/kristophernolte/Documents/GitHub/test_mtz/"
+sf_path = "/Users/kristophernolte/Documents/GitHub/missing_sf/"
 
 def get_sf (pdb_id):
     pdb_ftp_link = "https://ftp.rcsb.org/pub/pdb/data/structures/all/structure_factors/"
@@ -30,4 +31,4 @@ def main ():
         convert_sf_to_mtz(filename, pdb_id)
         print(round(i/len(pdb_lst),2))
 
-main()
+convert_sf_to_mtz("3m9s-sf.cif", "3m9s")

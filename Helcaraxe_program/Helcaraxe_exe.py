@@ -2,8 +2,7 @@ import numpy as np
 import scipy as scp
 import math
 import gemmi
-from tensorflow import keras, image, convert_to_tensor
-import matplotlib.pyplot as plt
+from tensorflow import keras, image
 
 """
 This code was written by Kristopher Nolte in 2020/2021 as part of Thorn Lab, University of Hamburg.
@@ -83,11 +82,9 @@ def get_pred_lst (i_res, f_res, i_obs, f_obs):
         NoneType (None) = Resolution range was not predicted due to missing intensities
         float (0 -> 1) = classification of the model, 0 = no ice ring, 1 = ice ring
     """
-    global model, ice_ranges, value
+    global model, ice_ranges
     #loading resolution ranges and models
     ice_ranges = np.genfromtxt("Auspex_ranges.csv", delimiter=';')
-    #model_iobs = keras.models.load_model("final_models/best_Iobs_model")
-    #model_fobs = keras.models.load_model("final_models/best_Fobs_model")
 
     model_iobs = keras.models.load_model("elenwe_models/Elenwe_Iobs_model_retrained")
     model_fobs = keras.models.load_model("elenwe_models/Elenwe_Fobs_model")
@@ -100,7 +97,6 @@ def get_pred_lst (i_res, f_res, i_obs, f_obs):
     # Takes I_obs value if avaible and returns list of models prediction
     # ToDo: functionalize
     if i_obs is not None and i_res is not None:
-        value = "I"
         model = model_iobs
         I_plot_lst, I_del_list = plot_generator(i_res, i_obs, ice_ranges)
         if I_plot_lst is not None and I_del_list is not None:
@@ -110,14 +106,15 @@ def get_pred_lst (i_res, f_res, i_obs, f_obs):
 
     # Takes F_obs value if avaible and returns list of models prediction
     if f_obs is not None and f_res is not None:
-        value = "F"
         model = model_fobs
         F_plot_lst, F_del_list = plot_generator(f_res, f_obs, ice_ranges)
         if F_plot_lst is not None and F_del_list is not None:
             F_prediction_lst = predictor(F_plot_lst, F_del_list)
         else:
             raise Exception("Invalid Input")
-
+    print("I_prediction",I_prediction_lst)
+    print("###")
+    print("F_prediction", F_prediction_lst)
     return I_prediction_lst, F_prediction_lst
 
 def plot_generator(res_lst, y_lst, ice_ranges):
