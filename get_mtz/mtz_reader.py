@@ -11,7 +11,7 @@ of resolution ranges in which ice rings can appear.
 You need to change the paths in the main function to the correct inputs. 
 A mtz file, a classification list with collumns ["PDB-ID", "Ice", "Position"] and the auspex csv file is required
 """
-version = "train"
+version = "test"
 
 def mtz_reader (mtz, pdb_id):
     """
@@ -82,6 +82,7 @@ def plot (res_lst, ampli_lst, pdb_id, max_res, marker):
             id_key = "_".join([marker, pdb_id, position])
             id_list.append(id_key)
             plot_list.append(bin_arr)
+    print(pdb_id, len(plot_list))
 
 
 def master (plot_list, class_list):
@@ -113,18 +114,19 @@ def master (plot_list, class_list):
 def main():
     global plot_list, id_list, root, class_list
     root = "/Users/kristophernolte/Documents/GitHub/helcaraxe/"
-    class_list = pd.read_pickle(root + "arrays/cleaned_train.pkl")
+    class_list = pd.read_pickle(root + "dataframes_n_arrays/helcaraxe_test_labels.pkl")
     plot_list, id_list, stat_list_l, stat_list_r, missing_keys = [], [], [], [], []
 
-    for i,key in enumerate(class_list["PDB-ID"]):
+    for i,key in enumerate(class_list["PDB-ID"].unique()):
         key = key[:4]
         try:
-            mtz = gemmi.read_mtz_file("/Users/kristophernolte/Documents/GitHub/helcaraxe/train_mtz/"+key+".mtz")
+            mtz = gemmi.read_mtz_file("/Users/kristophernolte/Documents/GitHub/test_mtz/{}.mtz".format(key) )
             mtz_reader(mtz, key)
         except RuntimeError: missing_keys.append(key)
         print(round(i/len(class_list),2))
 
     print(missing_keys)
-    master(plot_list, class_list)
+    np.save("/Users/kristophernolte/Documents/GitHub/helcaraxe/dataframes_n_arrays/helcaraxe_elenwe_binplots_{}.npy".format(version), plot_list)
+    #master(plot_list, class_list)
 
 main()
