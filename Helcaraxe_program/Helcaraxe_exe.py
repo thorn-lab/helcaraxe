@@ -86,8 +86,8 @@ def get_pred_lst (i_res, f_res, i_obs, f_obs):
     #loading resolution ranges and models
     ice_ranges = np.genfromtxt("Auspex_ranges.csv", delimiter=';')
 
-    model_iobs = keras.models.load_model("elenwe_models/Elenwe_Iobs_model_retrained")
-    model_fobs = keras.models.load_model("elenwe_models/Elenwe_Fobs_model")
+    model_iobs = keras.models.load_model("models/Elenwe_Iobs_model_retrained")
+    model_fobs = keras.models.load_model("models/Elenwe_Fobs_model")
     I_prediction_lst, F_prediction_lst = None, None
 
     # Raises Exception if .mtz file has no f_obs or i_obs values
@@ -112,9 +112,6 @@ def get_pred_lst (i_res, f_res, i_obs, f_obs):
             F_prediction_lst = predictor(F_plot_lst, F_del_list)
         else:
             raise Exception("Invalid Input")
-    print("I_prediction",I_prediction_lst)
-    print("###")
-    print("F_prediction", F_prediction_lst)
     return I_prediction_lst, F_prediction_lst
 
 def plot_generator(res_lst, y_lst, ice_ranges):

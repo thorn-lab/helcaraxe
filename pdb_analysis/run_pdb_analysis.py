@@ -14,21 +14,20 @@ def get_helcaraxe (pdb_id):
     mtz_path = "/Volumes/My Passport/complete_pdb/mtz/r" + pdb_id.lower() + "sf.mtz"
     I_ice_ring_index, F_ice_ring_index = None, None
 
+    I_prediction_lst, F_prediction_lst = he.mtz_opener(mtz_path)
     try:
-        I_prediction_lst, F_prediction_lst = he.mtz_opener(mtz_path)
         if I_prediction_lst is not None:
             I_ice_ring_index = interpret_helcaraxe(I_prediction_lst)
         if F_prediction_lst is not None:
             F_ice_ring_index = interpret_helcaraxe(F_prediction_lst)
-    except Exception:
-        pass
-
+    except Exception as e:
+        print(e.message)
     return I_ice_ring_index, F_ice_ring_index
 
 def main ():
     global main_np
-    main_df = pd.read_pickle("PDB_REPORT_pkl/pdb_meta_tab.pkl")
-    main_np = list(np.load("PDB_REPORT_pkl/pdb_ice_tab.npy", allow_pickle=True))
+    main_df = pd.read_pickle("files/pdb_meta_tab.pkl")
+    main_np = list(np.load("files/pdb_ice_tab.npy", allow_pickle=True))
     id_list = main_df["PDB ID"]
     for i, pdb_id in enumerate(id_list):
         try:
@@ -40,12 +39,10 @@ def main ():
                     print(str(round(i/len(id_list),4))+" % done")
                     print(main_df["F_ice"].value_counts())
 
-                    main_df.to_pickle("PDB_REPORT_pkl/pdb_meta_tab.pkl")
-                    np.save("PDB_REPORT_pkl/pdb_ice_tab.npy", main_np)
+                    main_df.to_pickle("files/pdb_meta_tab.pkl")
+                    np.save("files/pdb_ice_tab.npy", main_np)
         except KeyError: pass
     else:
         pass
-        main_df.to_pickle("PDB_REPORT_pkl/pdb_meta_tab.pkl")
-        np.save("PDB_REPORT_pkl/pdb_ice_tab.npy", main_np)
-
-main()
+        main_df.to_pickle("files/pdb_meta_tab.pkl")
+        np.save("files/pdb_ice_tab.npy", main_np)
