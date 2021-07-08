@@ -3,24 +3,17 @@
 
 The project aims to find ice-rings in protein diffraction data which are visible as "spikes" in plots of structure factor or observed intensity versus resolution.
 
-#NAMING CONVENTIONS
-evaluation_table -> results of evaluation against test set
-master 		-> complete preprocessed version
-binplots 	-> NumPy array which holds the 2D histograms
-array 		-> pandas DataFrame holding metadata + labels(accesable ["Ice-Ring])
-train 		-> training set(:len(X)*0.8) and validation set(len(X)*0.8:)
-Fobs/Iobs	-> histograms have been generated only out of the named value
-cleaned 		-> Bad data has been removed.
+#data
+ARM: .yml of the environment used
 
-#FOLDER
-arrays: 		.pkl and .npy files which hold data read by the scripts
+Data: .pkl and .npy files which hold data read by the scripts
 
-files: 		.csv and .xlsx files which hold to human readable data
+Get_mtz/cif_to_mtz.py: script to convert sf.cif files to .mtz
 
-Helcaraxe_programm: contains the final models, deployable script, auspex_ranges and some mtz to test
+Helcaraxe_programm: contains the final models, deployable script, auspex_ranges, some mtz to test and script which evaluates the performance of the Helcaraxe models
 
-Env:		contains the environment in which Helcaraxe was developed
+Helcaraxe_module: contains script to be loaded as module into AUSPEX
 
-Archive: 	contains old files which are not relevant
+Ipynb: contains Jupiter notebooks which were used to build and train the model. Also contains a script to prepare helcarxe models to be used in SmoothGrad and a script which lets SmoothGrad run on the model. 
 
 pdb_analysis:	contains script and data for Helcaraxe pdb run
