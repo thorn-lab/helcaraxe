@@ -11,3 +11,4 @@ arrays/master_binplots_train.npy
 .idea/workspace.xml
 dataframes_n_arrays/helcaraxe_elenwe_binplots_train.npy
 dataframes_n_arrays/helcaraxe_binplots_train.npy
+data/helcaraxe_binplots_train.npy
