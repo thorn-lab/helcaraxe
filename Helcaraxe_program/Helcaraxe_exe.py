@@ -2,7 +2,7 @@ import numpy as np
 import scipy as scp
 import math
 import gemmi
-from tensorflow import keras, image, convert_to_tensor
+from tensorflow import keras, image
 
 """
 This code was written by Kristopher Nolte in 2020/2021 as part of Thorn Lab, University of Hamburg.
@@ -10,7 +10,6 @@ This .py takes I_obs, F_obs and Resolution values and out of this produces plots
 of resolution ranges in which ice rings can appear.
 These plots are classified by a CNN model and the prediction is returned as a numpy array
 """
-
 def mtz_opener(mtz_path):
     """
     Function is only for testing until Helcaraxe is integrated into AUSPEX.py
@@ -18,8 +17,8 @@ def mtz_opener(mtz_path):
     :param mtz_path: path as string to .mtz file
     :return: mtz_reader()
     """
-    # This is only to test, this task will be taken by auspex !!!
 
+    # This is only to test, this task will be taken by auspex !!!
     def mtz_reader():
         """
         Function is only for testing until Helcaraxe is integrated into AUSPEX.py
@@ -85,9 +84,10 @@ def get_pred_lst (i_res, f_res, i_obs, f_obs):
     """
     global model, ice_ranges
     #loading resolution ranges and models
-    ice_ranges = np.genfromtxt("/Volumes/My Passport/Helcaraxe/ARM_env/Helcaraxe_program/Auspex_ranges.csv", delimiter=';')
-    model_iobs = keras.models.load_model("/Volumes/My Passport/Helcaraxe/ARM_env/Helcaraxe_program/final_models/best_Iobs_model")
-    model_fobs = keras.models.load_model("/Volumes/My Passport/Helcaraxe/ARM_env/Helcaraxe_program/final_models/best_Fobs_model")
+    ice_ranges = np.genfromtxt("Auspex_ranges.csv", delimiter=';')
+
+    model_iobs = keras.models.load_model("models/Elenwe_Iobs_model_retrained")
+    model_fobs = keras.models.load_model("models/Elenwe_Fobs_model")
     I_prediction_lst, F_prediction_lst = None, None
 
     # Raises Exception if .mtz file has no f_obs or i_obs values
@@ -112,7 +112,6 @@ def get_pred_lst (i_res, f_res, i_obs, f_obs):
             F_prediction_lst = predictor(F_plot_lst, F_del_list)
         else:
             raise Exception("Invalid Input")
-
     return I_prediction_lst, F_prediction_lst
 
 def plot_generator(res_lst, y_lst, ice_ranges):
@@ -161,12 +160,12 @@ def plot_generator(res_lst, y_lst, ice_ranges):
                 :return: sets blank images to None in prediction_lst -> They will not be predicted by the model
                 """
                 step = 10
-                i = 0
-                while i < 80:
-                    if np.mean(plot[:, i:i + step]) <= 0.005:
+                i = 10
+                while i < 70:
+                    if np.mean(plot[:, i:i + step]) <= 0:
                         del_lst[pos-1] = 99
                         break
-                    i += 5
+                    i += 4
                 return del_lst
 
             del_list = discriminator(bin_arr, pos)
@@ -174,10 +173,9 @@ def plot_generator(res_lst, y_lst, ice_ranges):
 
     # plots are reshaped in a CNN usable format and standardized
     if len(plot_lst) > 0:
-        plot_lst = np.asarray(plot_lst).astype(np.float32)
+        plot_lst = np.asarray(plot_lst)
         plot_lst = plot_lst.reshape(len(plot_lst), 80, 80, 1)
         plot_lst = image.per_image_standardization(plot_lst)
-        plot_lst = convert_to_tensor(plot_lst)
         return plot_lst, del_lst
     else:
         return None, None
@@ -194,10 +192,11 @@ def predictor(plot_lst, del_lst):
     #checking if discriminator function has marked a histogram and if so sets its value in the prediction list to None
     for j in range(len(model_prediction)):
         if del_lst[j] == 99:
-            prediction_lst[j] = None
+            prediction_lst[j] = 99
         else:
             prediction_lst[j] = model_prediction[j][0]
-    prediction_lst = np.asarray(np.around(prediction_lst, 2))
+
+    prediction_lst = np.asarray(np.around(prediction_lst, 4))
     return prediction_lst
 
 def get_txt(entry_path):

@@ -16,16 +16,17 @@ def main (i_res, i_obs, f_res, f_obs):
     :param f_res: list of Resolution values corresponding to f_obs values
     :param f_obs: list of F_obs values
 
-    All parameters have to have the same lenght! The index of the list is used for referencing
+    All parameters have to have the same lenght! The index of the list is relevant.
 
     :var model: Convolutional Neural Network (CNN) model, input shape: [80,80,1], output: float between 0 or 1
-    :var I_prediction_lst: list of predictions, index is refering to ice_ranges.
-    :var F_prediction_lst: list of predictions, index is refering to ice_ranges.
+    :return[0] I_prediction_lst: list of predictions, index is refering to ice_ranges.
+    :return[1] F_prediction_lst: list of predictions, index is refering to ice_ranges.
      Possible Predictions:
         int (-1) = Resolution range was not available
         NoneType (None) = Resolution range was not predicted due to missing intensities
         float (0 -> 1) = classification of the model, 0 = no ice ring, 1 = ice ring
     """
+
     global model, ice_ranges
     #loading resolution ranges and models
     ice_ranges = np.genfromtxt("Auspex_ranges.csv", delimiter=';')
