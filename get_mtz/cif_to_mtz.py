@@ -3,8 +3,8 @@ import requests
 import pandas as pd
 
 #path to root folders
-mtz_path = "/Users/kristophernolte/Documents/GitHub/test_mtz/"
-sf_path = "/Users/kristophernolte/Documents/GitHub/missing_sf/"
+mtz_path = "/Users/kristophernolte/Documents/GitHub/test_pdbrun/"
+sf_path = "/Users/kristophernolte/Documents/GitHub/test_pdbrun/"
 
 def get_sf (pdb_id):
     """
@@ -37,8 +37,9 @@ def main ():
     for unique pdb entry in DataFrame df it downloads the sf.cif file from the rcsb and then converts it to mtz
     uses the paths to root folders defined at line 6 & 7
     """
-    df = pd.read_pickle("/Users/kristophernolte/Documents/GitHub/helcaraxe/arrays/cleaned_train.pkl")
-    pdb_lst = df["PDB-ID"].unique()
+    #df = pd.read_pickle("/Users/kristophernolte/Documents/GitHub/helcaraxe/arrays/cleaned_train.pkl")
+    #pdb_lst = df["PDB-ID"].unique()
+    pdb_lst = ['6HBA', '6HBB', '6HBE', '6HBD', '6HAX', '6HB9', '6HAW', '6HB8', '6HAZ', '6HAY']
     for i,pdb_id in enumerate(pdb_lst):
         pdb_id = pdb_id.replace(" ","")
         pdb_id = pdb_id.lower()
@@ -46,4 +47,4 @@ def main ():
         convert_sf_to_mtz(filename, pdb_id)
         print(round(i/len(pdb_lst),2))
 
-convert_sf_to_mtz("3m9s-sf.cif", "3m9s")
+main()
