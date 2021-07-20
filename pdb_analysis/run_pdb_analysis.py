@@ -18,7 +18,7 @@ def get_helcaraxe (pdb_id):
             return 0
 
     # load mtz
-    mtz_path = "/Volumes/My Passport/complete_pdb/mtz/r" + pdb_id.lower() + "sf.mtz"
+    mtz_path = "/Users/kristophernolte/Documents/GitHub/test_pdbrun/" + pdb_id.lower() + ".mtz"
     # set default value to None
     I_ice_ring_index, F_ice_ring_index = None, None
 
@@ -43,7 +43,7 @@ def main ():
     main_df = pd.read_pickle("files/pdb_meta_tab.pkl")
     main_np = list(np.load("files/pdb_ice_tab.npy", allow_pickle=True))
     id_list = main_df["PDB ID"]
-    for i, pdb_id in enumerate(id_list):
+    for i, pdb_id in enumerate(id_list[:10]):
         try:
             # -1 is the default value in main_df["I_ice"] and main_df["F_ice"] and therefore marks not inspected strcutures.
             if main_df.loc[pdb_id,"I_ice"] == -1 and main_df.loc[pdb_id,"F_ice"] == -1:
@@ -54,11 +54,13 @@ def main ():
                 if i % 50 == 0:
                     print(str(round(i/len(id_list),4))+" % done")
                     print(main_df["F_ice"].value_counts())
-
-                    main_df.to_pickle("files/pdb_meta_tab.pkl")
-                    np.save("files/pdb_ice_tab.npy", main_np)
+                    print(main_df["I_ice"].value_counts())
+                    #main_df.to_pickle("files/pdb_meta_tab.pkl")
+                    #np.save("files/pdb_ice_tab.npy", main_np)
         except KeyError: pass
     else:
+        print(main_df["F_ice"].value_counts())
+        print(main_df["I_ice"].value_counts())
         # save df and numpy array at the end
-        main_df.to_pickle("files/pdb_meta_tab.pkl")
-        np.save("files/pdb_ice_tab.npy", main_np)
+        #main_df.to_pickle("files/pdb_meta_tab.pkl")
+        #np.save("files/pdb_ice_tab.npy", main_np)

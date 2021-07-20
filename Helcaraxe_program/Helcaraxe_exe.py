@@ -84,10 +84,10 @@ def get_pred_lst (i_res, f_res, i_obs, f_obs):
     """
     global model, ice_ranges
     #loading resolution ranges and models
-    ice_ranges = np.genfromtxt("Auspex_ranges.csv", delimiter=';')
+    ice_ranges = np.genfromtxt("/Users/kristophernolte/Documents/GitHub/helcaraxe/Helcaraxe_program/Auspex_ranges.csv", delimiter=';')
 
-    model_iobs = keras.models.load_model("models/Elenwe_Iobs_model_retrained")
-    model_fobs = keras.models.load_model("models/Elenwe_Fobs_model")
+    model_iobs = keras.models.load_model("/Users/kristophernolte/Documents/GitHub/helcaraxe/Helcaraxe_program/models/Helcaraxe_Fobs_model")
+    model_fobs = keras.models.load_model("/Users/kristophernolte/Documents/GitHub/helcaraxe/Helcaraxe_program/models/Helcaraxe_Iobs_model")
     I_prediction_lst, F_prediction_lst = None, None
 
     # Raises Exception if .mtz file has no f_obs or i_obs values
