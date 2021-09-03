@@ -1,0 +1,9 @@
+#Directory /SmoothGrad
+
+class_model_Iobs (Fobs): Retrained models to work with binary classification instead of sigmoid. This is necessary to run SmoothGrad
+
+I_obs(F_obs)_test_plots: .npy files coating all plots of the test set. Index is corresponding to labels.pkl file
+
+Model_SmoothGrad.ipynb: Notebook to run SmoothGrad on models
+
+Smooth_grad_prep: Notebook to convert Helcaraxe models into binary classification.

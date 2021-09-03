@@ -12,3 +12,5 @@ Helcaraxe_module: contains script to be loaded as module into AUSPEX
 Ipynb: contains Jupiter notebooks which were used to build and train the model. Also contains a script to prepare helcarxe models to be used in SmoothGrad and a script which lets SmoothGrad run on the model. 
 
 pdb_analysis:	contains script and data for Helcaraxe pdb run
+
+SmoothGrad: resources to redo the SmoothGrad run
